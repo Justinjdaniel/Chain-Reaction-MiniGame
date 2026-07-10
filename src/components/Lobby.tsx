@@ -289,18 +289,26 @@ export const Lobby: React.FC<LobbyProps> = ({
                         </button>
                         {isPickerOpen && (
                           <div className="absolute left-0 top-10 mt-1 grid grid-cols-4 gap-2 p-3 bg-slate-950 border border-slate-800 rounded-xl z-30 shadow-[0_10px_30px_rgba(0,0,0,0.8)] animate-scaleUp">
-                            {COLOR_PALETTE.map(cp => (
-                              <button
-                                type="button"
-                                key={cp.hex}
-                                onClick={() => updatePlayerColor(player.id, cp.hex)}
-                                aria-label={`Set color to ${cp.name}`}
-                                className={`w-6 h-6 rounded-full hover:scale-110 transition-all ${
-                                  player.color === cp.hex ? 'ring-2 ring-neonBlue scale-110' : 'opacity-80 hover:opacity-100'
-                                }`}
-                                style={{ backgroundColor: cp.hex, boxShadow: `0 0 6px ${cp.hex}40` }}
-                              />
-                            ))}
+                            {COLOR_PALETTE.map(cp => {
+                              const isColorUsed = players.some(p => p.color === cp.hex && p.id !== player.id);
+                              return (
+                                <button
+                                  type="button"
+                                  key={cp.hex}
+                                  disabled={isColorUsed}
+                                  onClick={() => updatePlayerColor(player.id, cp.hex)}
+                                  aria-label={`Set color to ${cp.name}`}
+                                  className={`w-6 h-6 rounded-full transition-all ${
+                                    player.color === cp.hex
+                                      ? 'ring-2 ring-neonBlue scale-110'
+                                      : isColorUsed
+                                      ? 'opacity-20 cursor-not-allowed'
+                                      : 'opacity-80 hover:opacity-100 hover:scale-110'
+                                  }`}
+                                  style={{ backgroundColor: cp.hex, boxShadow: isColorUsed ? 'none' : `0 0 6px ${cp.hex}40` }}
+                                />
+                              );
+                            })}
                           </div>
                         )}
                       </div>

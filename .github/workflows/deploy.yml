@@ -17,8 +17,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -52,16 +50,6 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
-
-      - name: Automated Version Bump
-        uses: phips28/gh-action-bump-version@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          major-wording: 'major,BREAKING CHANGE,MAJOR'
-          minor-wording: 'feat,feature,minor,MINOR'
-          patch-wording: 'fix,fixes,patch,PATCH'
-          default: 'patch'
 
       - name: Build Production Web App
         run: npm run build
