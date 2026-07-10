@@ -79,7 +79,7 @@ export function App() {
       const exploding = [];
       for (let row = 0; row < engine.rows; row++) {
         for (let col = 0; col < engine.cols; col++) {
-          if (engine.grid[row][col].orbs >= engine.grid[row][col].criticalMass) {
+          if (engine.grid[row][col].orbs >= engine.grid[row][col].criticalMass + 1) {
             exploding.push({ r: row, c: col });
           }
         }
@@ -177,7 +177,7 @@ export function App() {
               <div className="fixed inset-0 bg-slate-950/90 flex items-center justify-center z-50 p-4">
                 <div
                   style={{ borderColor: winner.color }}
-                  className="max-w-md w-full bg-slate-900 border-2 p-8 rounded-2xl text-center space-y-6 shadow-2xl animate-bounce"
+                  className="max-w-md w-full bg-slate-900 border-2 p-8 rounded-2xl text-center space-y-6 shadow-2xl"
                 >
                   <h2 className="text-4xl font-extrabold uppercase tracking-widest text-slate-100">
                     VICTORY!

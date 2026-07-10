@@ -67,9 +67,11 @@ export const Lobby: React.FC<LobbyProps> = ({
   const updatePlayerType = (id: number, type: 'human' | 'ai') => {
     setPlayers(players.map(p => {
       if (p.id === id) {
+        const defaultName = type === 'ai' ? 'AI Bot' : `Player ${id + 1}`;
         return {
           ...p,
           type,
+          name: defaultName,
           difficulty: type === 'ai' ? 'medium' : undefined
         };
       }
@@ -113,6 +115,34 @@ export const Lobby: React.FC<LobbyProps> = ({
           Chain Reaction
         </h1>
         <p className="text-sm text-slate-400 tracking-widest uppercase">Classic Cascade Strategy Game</p>
+      </div>
+
+      {/* Rules and Instructions Panel */}
+      <div className="bg-slate-900/40 border border-slate-800/80 p-5 rounded-xl space-y-3 shadow-inner">
+        <h3 className="text-md font-bold text-neonBlue uppercase tracking-wider flex items-center gap-2">
+          <span>🌌 REACTOR RULES & INSTRUCTIONS</span>
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-300">
+          <div className="bg-slate-950/60 p-3 rounded border border-slate-800/60 space-y-1">
+            <span className="font-bold text-neonRed uppercase">💥 Explosion Thresholds</span>
+            <p>Each cell has a Critical Mass capacity determined by its location:</p>
+            <ul className="list-disc list-inside space-y-0.5 text-slate-400 font-mono mt-1">
+              <li>Corners: Cap = 2 (explodes at 3 orbs)</li>
+              <li>Edges: Cap = 3 (explodes at 4 orbs)</li>
+              <li>Centers: Cap = 4 (explodes at 5 orbs)</li>
+            </ul>
+          </div>
+          <div className="bg-slate-950/60 p-3 rounded border border-slate-800/60 space-y-1">
+            <span className="font-bold text-neonGreen uppercase">🔄 Cascade Subtraction</span>
+            <p>When a cell explodes, it loses its full critical mass capacity plus one orb (leaving 0 orbs behind in that cell).</p>
+            <p className="text-slate-400 mt-1">Orbs are distributed orthogonally, converting opponent cells to your color!</p>
+          </div>
+          <div className="bg-slate-950/60 p-3 rounded border border-slate-800/60 space-y-1">
+            <span className="font-bold text-neonYellow uppercase">💀 Early Victory Condition</span>
+            <p>If all other players have 0 dots left on the board, the game ends immediately. No need to wait for further explosions to fill all cells.</p>
+            <p className="text-slate-400 mt-1">Elimination check begins after each player has placed their first orb.</p>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

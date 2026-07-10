@@ -95,9 +95,10 @@ export class ChainReactionEngine {
 
         if (activePlayer === null) continue;
 
-        // Deduct exactly critical mass, retain the remainder
-        cell.orbs -= cell.criticalMass;
-        if (cell.orbs === 0) {
+        // Deduct exactly critical mass + 1, retain the remainder
+        cell.orbs -= (cell.criticalMass + 1);
+        if (cell.orbs <= 0) {
+          cell.orbs = 0;
           cell.player = null;
         }
 
@@ -120,6 +121,12 @@ export class ChainReactionEngine {
         cell.orbs++;
       }
 
+      // Check eliminations and check if game is over early (no player dot exist)
+      this.checkEliminations();
+      if (this.checkGameOver()) {
+        break;
+      }
+
       // Find next batch of unstable cells
       explodingCells = this.getExplodingCells();
     }
@@ -134,7 +141,7 @@ export class ChainReactionEngine {
     const list: { r: number; c: number }[] = [];
     for (let r = 0; r < this.rows; r++) {
       for (let c = 0; c < this.cols; c++) {
-        if (this.grid[r][c].orbs >= this.grid[r][c].criticalMass) {
+        if (this.grid[r][c].orbs >= this.grid[r][c].criticalMass + 1) {
           list.push({ r, c });
         }
       }
