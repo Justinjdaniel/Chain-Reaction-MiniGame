@@ -11,40 +11,12 @@ const DEFAULT_STATS: Stats = {
   currentStreak: 0
 };
 
-export const sanitizeStats = (parsed: any): Stats => {
-  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-    return DEFAULT_STATS;
-  }
-  return {
-    gamesPlayed: Object.prototype.hasOwnProperty.call(parsed, 'gamesPlayed') && typeof parsed.gamesPlayed === 'number' && Number.isFinite(parsed.gamesPlayed) ? parsed.gamesPlayed : 0,
-    gamesWon: Object.prototype.hasOwnProperty.call(parsed, 'gamesWon') && typeof parsed.gamesWon === 'number' && Number.isFinite(parsed.gamesWon) ? parsed.gamesWon : 0,
-    highestStreak: Object.prototype.hasOwnProperty.call(parsed, 'highestStreak') && typeof parsed.highestStreak === 'number' && Number.isFinite(parsed.highestStreak) ? parsed.highestStreak : 0,
-    currentStreak: Object.prototype.hasOwnProperty.call(parsed, 'currentStreak') && typeof parsed.currentStreak === 'number' && Number.isFinite(parsed.currentStreak) ? parsed.currentStreak : 0,
-  };
-};
-
-export const sanitizeLeaderboard = (parsed: any): EfficiencyRecord[] => {
-  if (!Array.isArray(parsed)) {
-    return [];
-  }
-  return parsed
-    .filter(item => item && typeof item === 'object' && !Array.isArray(item))
-    .map(item => {
-      const turns = Object.prototype.hasOwnProperty.call(item, 'turns') && typeof item.turns === 'number' && Number.isFinite(item.turns) ? item.turns : 999;
-      const boardSize = Object.prototype.hasOwnProperty.call(item, 'boardSize') && typeof item.boardSize === 'string' ? item.boardSize.slice(0, 10) : 'unknown';
-      const difficulty = Object.prototype.hasOwnProperty.call(item, 'difficulty') && ['easy', 'medium', 'hard', 'local'].includes(item.difficulty) ? item.difficulty : 'local';
-      const date = Object.prototype.hasOwnProperty.call(item, 'date') && typeof item.date === 'string' ? item.date.slice(0, 30) : new Date().toLocaleDateString();
-      return { turns, boardSize, difficulty, date } as EfficiencyRecord;
-    })
-    .slice(0, 10);
-};
-
 export function useGameStats() {
   const [stats, setStats] = useState<Stats>(() => {
     const saved = localStorage.getItem(STATS_KEY);
     if (saved) {
       try {
-        return sanitizeStats(JSON.parse(saved));
+        return JSON.parse(saved);
       } catch (e) {
         return DEFAULT_STATS;
       }
@@ -56,7 +28,7 @@ export function useGameStats() {
     const saved = localStorage.getItem(LEADERBOARD_KEY);
     if (saved) {
       try {
-        return sanitizeLeaderboard(JSON.parse(saved));
+        return JSON.parse(saved);
       } catch (e) {
         return [];
       }

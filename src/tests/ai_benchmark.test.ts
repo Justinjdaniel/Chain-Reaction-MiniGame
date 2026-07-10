@@ -36,8 +36,11 @@ describe('Chain Reaction AI Benchmark Execution', () => {
             const active = ecCell.player;
             if (active === null) continue;
 
-            ecCell.orbs -= ecCell.criticalMass;
-            if (ecCell.orbs === 0) ecCell.player = null;
+            ecCell.orbs -= (ecCell.criticalMass + 1);
+            if (ecCell.orbs <= 0) {
+              ecCell.orbs = 0;
+              ecCell.player = null;
+            }
 
             if (er > 0) dist.push({ r: er - 1, c: ec, player: active });
             if (er < engine.rows - 1) dist.push({ r: er + 1, c: ec, player: active });
