@@ -22,36 +22,29 @@ export function App() {
   const [explodingCells, setExplodingCells] = useState<{ r: number; c: number }[]>([]);
   const [winner, setWinner] = useState<Player | null>(null);
 
+  // Keep a history of entire engine state clones for undoing moves
+  const [history, setHistory] = useState<ChainReactionEngine[]>([]);
+
   const engineRef = useRef<ChainReactionEngine | null>(null);
 
   const { stats, leaderboard, recordWin, recordLoss, recordEfficiency, resetStats } = useGameStats();
 
   const handleStartGame = () => {
-    // Sanitize and validate player names before starting
-    const sanitizedPlayers = players.map((p, idx) => {
-      // eslint-disable-next-line no-control-regex
-      const trimmed = p.name.trim().slice(0, 14).replace(/[\x00-\x1F\x7F]/g, '');
-      const defaultName = p.type === 'ai' ? `AI Bot ${idx + 1}` : `Player ${idx + 1}`;
-      return {
-        ...p,
-        name: trimmed.length > 0 ? trimmed : defaultName
-      };
-    });
-    setPlayers(sanitizedPlayers);
-
-    const engine = new ChainReactionEngine(boardRows, boardCols, sanitizedPlayers.length);
+    const engine = new ChainReactionEngine(boardRows, boardCols, players.length);
     engineRef.current = engine;
     setGrid(engine.cloneGridState());
     setCurrentPlayer(engine.currentPlayer);
     setWinner(null);
     setExplodingCells([]);
     setIsProcessing(false);
+    setHistory([]);
     setInGame(true);
   };
 
   const handleExitGame = () => {
     setInGame(false);
     setWinner(null);
+    setHistory([]);
     engineRef.current = null;
   };
 
@@ -134,7 +127,27 @@ export function App() {
     const activePlayer = players[currentPlayer];
     if (activePlayer.type === 'ai') return;
 
+    // Save the current engine state to history before a human player makes a move
+    if (engineRef.current) {
+      setHistory((prev) => [...prev, engineRef.current!.clone()]);
+    }
+
     await handleCellMove(r, c);
+  };
+
+  const handleUndo = () => {
+    if (isProcessing || history.length === 0) return;
+
+    // Pop the last saved engine state
+    const previousEngine = history[history.length - 1];
+    setHistory((prev) => prev.slice(0, -1));
+
+    engineRef.current = previousEngine;
+    setGrid(previousEngine.cloneGridState());
+    setCurrentPlayer(previousEngine.currentPlayer);
+    setWinner(null);
+    setExplodingCells([]);
+    setIsProcessing(false);
   };
 
   return (
@@ -185,6 +198,23 @@ export function App() {
               explodingCells={explodingCells}
             />
 
+            {/* Undo button rendered beneath the board */}
+            <div className="flex justify-center w-full max-w-sm px-4">
+              <button
+                onClick={handleUndo}
+                disabled={isProcessing || history.length === 0}
+                className={`
+                  w-full py-3 border rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300
+                  ${(isProcessing || history.length === 0)
+                    ? 'border-slate-900 bg-slate-950/20 text-slate-600 cursor-not-allowed'
+                    : 'border-neonBlue bg-neonBlue/10 text-neonBlue hover:bg-neonBlue/20 shadow-[0_0_10px_rgba(0,240,255,0.2)] hover:shadow-[0_0_15px_rgba(0,240,255,0.4)]'
+                  }
+                `}
+              >
+                ↩ Undo last move
+              </button>
+            </div>
+
             {winner && (
               <div className="fixed inset-0 bg-slate-950/90 flex items-center justify-center z-50 p-4">
                 <div
@@ -217,6 +247,14 @@ export function App() {
                     >
                       ⚡ REMATCH ⚡
                     </button>
+                    {history.length > 0 && (
+                      <button
+                        onClick={handleUndo}
+                        className="py-3 bg-neonBlue/20 border border-neonBlue/80 text-neonBlue font-bold rounded-lg hover:bg-neonBlue/30 uppercase text-xs tracking-wider transition-all shadow-[0_0_10px_rgba(0,240,255,0.2)]"
+                      >
+                        ↩ Undo Winning Blow
+                      </button>
+                    )}
                     <button
                       onClick={handleExitGame}
                       className="py-3 bg-slate-950 border border-slate-800 text-slate-400 font-bold rounded-lg hover:text-slate-200 uppercase text-xs tracking-wider transition-all"

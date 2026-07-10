@@ -95,37 +95,71 @@ export const Board: React.FC<BoardProps> = ({
                       )}
 
                       {cell.orbs === 2 && (
-                        <div className="flex gap-1 items-center justify-center">
-                          <div
-                            style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
-                            className="w-3.5 h-3.5 rounded-full animate-bounce"
-                          />
-                          <div
-                            style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
-                            className="w-3.5 h-3.5 rounded-full animate-bounce [animation-delay:0.15s]"
-                          />
-                        </div>
+                        cell.criticalMass === 2 ? (
+                          // Corner unstable: spin 2 orbs
+                          <div className="flex gap-1 items-center justify-center animate-spin duration-1000">
+                            <div
+                              style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
+                              className="w-3.5 h-3.5 rounded-full"
+                            />
+                            <div
+                              style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
+                              className="w-3.5 h-3.5 rounded-full"
+                            />
+                          </div>
+                        ) : (
+                          // Normal 2 orbs: bounce
+                          <div className="flex gap-1 items-center justify-center">
+                            <div
+                              style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
+                              className="w-3.5 h-3.5 rounded-full animate-bounce"
+                            />
+                            <div
+                              style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
+                              className="w-3.5 h-3.5 rounded-full animate-bounce [animation-delay:0.15s]"
+                            />
+                          </div>
+                        )
                       )}
 
                       {cell.orbs === 3 && (
-                        <div className="grid grid-cols-2 gap-1 items-center justify-center p-2">
-                          <div
-                            style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
-                            className="w-3 h-3 rounded-full animate-bounce"
-                          />
-                          <div
-                            style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
-                            className="w-3 h-3 rounded-full animate-bounce [animation-delay:0.1s]"
-                          />
-                          <div
-                            style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
-                            className="w-3 h-3 rounded-full col-span-2 mx-auto animate-bounce [animation-delay:0.2s]"
-                          />
-                        </div>
+                        cell.criticalMass === 3 ? (
+                          // Edge unstable: spin 3 orbs
+                          <div className="grid grid-cols-2 gap-1 items-center justify-center p-2 animate-spin duration-1000">
+                            <div
+                              style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
+                              className="w-3 h-3 rounded-full"
+                            />
+                            <div
+                              style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
+                              className="w-3 h-3 rounded-full"
+                            />
+                            <div
+                              style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
+                              className="w-3 h-3 rounded-full col-span-2 mx-auto"
+                            />
+                          </div>
+                        ) : (
+                          // Normal 3 orbs: bounce
+                          <div className="grid grid-cols-2 gap-1 items-center justify-center p-2">
+                            <div
+                              style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
+                              className="w-3 h-3 rounded-full animate-bounce"
+                            />
+                            <div
+                              style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
+                              className="w-3 h-3 rounded-full animate-bounce [animation-delay:0.1s]"
+                            />
+                            <div
+                              style={{ backgroundColor: cellOwner.color, boxShadow: `0 0 10px ${cellOwner.color}` }}
+                              className="w-3 h-3 rounded-full col-span-2 mx-auto animate-bounce [animation-delay:0.2s]"
+                            />
+                          </div>
+                        )
                       )}
 
                       {cell.orbs >= 4 && (
-                        <div className="grid grid-cols-2 gap-0.5 items-center justify-center p-1.5 animate-spin duration-1000">
+                        <div className={`grid grid-cols-2 gap-0.5 items-center justify-center p-1.5 ${cell.orbs === cell.criticalMass ? 'animate-spin duration-1000' : ''}`}>
                           {Array.from({ length: Math.min(cell.orbs, 4) }).map((_, idx) => (
                             <div
                               key={idx}
