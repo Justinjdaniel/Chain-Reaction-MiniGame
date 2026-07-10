@@ -32,10 +32,20 @@ export class ChainReactionAI {
 
   // Get all coordinates that the player can validly play
   static getLegalMoves(engine: ChainReactionEngine, playerId: number): { r: number; c: number }[] {
+    // Optimization: Hoist player and elimination validation out of the loop
+    if (playerId < 0 || playerId >= engine.playersCount) return [];
+    if (engine.isEliminated[playerId] || engine.currentPlayer !== playerId) return [];
+
     const moves: { r: number; c: number }[] = [];
-    for (let r = 0; r < engine.rows; r++) {
-      for (let c = 0; c < engine.cols; c++) {
-        if (engine.isValidMove(r, c, playerId)) {
+    const rows = engine.rows;
+    const cols = engine.cols;
+    const grid = engine.grid;
+
+    for (let r = 0; r < rows; r++) {
+      const row = grid[r];
+      for (let c = 0; c < cols; c++) {
+        const player = row[c].player;
+        if (player === null || player === playerId) {
           moves.push({ r, c });
         }
       }
