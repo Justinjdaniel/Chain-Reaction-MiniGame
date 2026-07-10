@@ -159,7 +159,7 @@ export function App() {
             Chain Reaction PWA
           </span>
           <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] font-semibold text-neonRed font-mono tracking-wider ml-1">
-            v1.0.0
+            v{__APP_VERSION__}
           </span>
         </div>
 
@@ -270,7 +270,7 @@ export function App() {
       </main>
 
       <footer className="p-4 border-t border-slate-900 text-center text-[10px] font-mono text-slate-600 uppercase tracking-widest bg-slate-950">
-        © CHAIN REACTION ENGINE v1.0.0 • LOCAL-FIRST • OFFLINE CAPABLE PWA
+        © CHAIN REACTION ENGINE v{__APP_VERSION__} • LOCAL-FIRST • OFFLINE CAPABLE PWA
       </footer>
     </div>
   );
