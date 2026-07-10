@@ -10,7 +10,7 @@ export class ChainReactionEngine {
   grid: Cell[][];
   turnCount: number; // to track efficiency
 
-  constructor(rows = 9, cols = 6, playersCount = 2) {
+  constructor(rows = 9, cols = 6, playersCount = 2, skipGridInit = false) {
     this.rows = rows;
     this.cols = cols;
     this.playersCount = playersCount;
@@ -22,14 +22,18 @@ export class ChainReactionEngine {
     // Track elimination status
     this.isEliminated = new Array(playersCount).fill(false);
 
-    // Initialize empty grid
-    this.grid = Array.from({ length: rows }, (_, r) =>
-      Array.from({ length: cols }, (_, c) => ({
-        player: null,
-        orbs: 0,
-        criticalMass: this.getCriticalMass(r, c)
-      }))
-    );
+    if (!skipGridInit) {
+      // Initialize empty grid
+      this.grid = Array.from({ length: rows }, (_, r) =>
+        Array.from({ length: cols }, (_, c) => ({
+          player: null,
+          orbs: 0,
+          criticalMass: this.getCriticalMass(r, c)
+        }))
+      );
+    } else {
+      this.grid = [];
+    }
   }
 
   // Calculate critical mass based on orthogonally adjacent neighbors
@@ -197,12 +201,31 @@ export class ChainReactionEngine {
   }
 
   cloneGridState(): Cell[][] {
-    return this.grid.map(row => row.map(cell => ({ ...cell })));
+    // Optimization: Pre-allocate array and use raw for-loops to avoid JS closure & array .map overhead
+    const rows = this.rows;
+    const cols = this.cols;
+    const grid = this.grid;
+    const copy: Cell[][] = new Array(rows);
+    for (let r = 0; r < rows; r++) {
+      const row = grid[r];
+      const newRow: Cell[] = new Array(cols);
+      for (let c = 0; c < cols; c++) {
+        const cell = row[c];
+        newRow[c] = {
+          player: cell.player,
+          orbs: cell.orbs,
+          criticalMass: cell.criticalMass
+        };
+      }
+      copy[r] = newRow;
+    }
+    return copy;
   }
 
   // Clone entire engine state for minimax simulations
   clone(): ChainReactionEngine {
-    const copy = new ChainReactionEngine(this.rows, this.cols, this.playersCount);
+    // Optimization: Skip initial empty grid allocation since copy.grid will be overwritten immediately
+    const copy = new ChainReactionEngine(this.rows, this.cols, this.playersCount, true);
     copy.currentPlayer = this.currentPlayer;
     copy.turnCount = this.turnCount;
     copy.hasTakenFirstTurn = [...this.hasTakenFirstTurn];
