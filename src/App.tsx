@@ -27,7 +27,19 @@ export function App() {
   const { stats, leaderboard, recordWin, recordLoss, recordEfficiency, resetStats } = useGameStats();
 
   const handleStartGame = () => {
-    const engine = new ChainReactionEngine(boardRows, boardCols, players.length);
+    // Sanitize and validate player names before starting
+    const sanitizedPlayers = players.map((p, idx) => {
+      // eslint-disable-next-line no-control-regex
+      const trimmed = p.name.trim().slice(0, 14).replace(/[\x00-\x1F\x7F]/g, '');
+      const defaultName = p.type === 'ai' ? `AI Bot ${idx + 1}` : `Player ${idx + 1}`;
+      return {
+        ...p,
+        name: trimmed.length > 0 ? trimmed : defaultName
+      };
+    });
+    setPlayers(sanitizedPlayers);
+
+    const engine = new ChainReactionEngine(boardRows, boardCols, sanitizedPlayers.length);
     engineRef.current = engine;
     setGrid(engine.cloneGridState());
     setCurrentPlayer(engine.currentPlayer);
