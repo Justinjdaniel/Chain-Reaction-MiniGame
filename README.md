@@ -2,7 +2,7 @@
 
 [![Build & Deploy](https://github.com/Justinjdaniel/Chain-Reaction-MiniGame/actions/workflows/deploy.yml/badge.svg)](https://github.com/Justinjdaniel/Chain-Reaction-MiniGame/actions/workflows/deploy.yml)
 [![Deployed URL](https://img.shields.io/badge/Deployed-Live_App-00ff66?style=flat-squared&logo=google-chrome&logoColor=fff)](https://justinjdaniel.github.io/Chain-Reaction-MiniGame/)
-[![Version](https://img.shields.io/badge/Version-v1.1.0-ff0055?style=flat-squared)](package.json)
+[![Version](https://img.shields.io/badge/Version-v1.0.0-ff0055?style=flat-squared)](package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-00f0ff?style=flat-squared)](LICENSE)
 
 An extremely responsive, high-performance, dark-themed **Chain Reaction Strategy Game** built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. Designed with a futuristic neon aesthetic, local-first performance, offline-capable Progressive Web App (PWA) features, and an advanced AI engine.
