@@ -151,14 +151,14 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-neonBlue selection:text-slate-950">
-      <header className="p-4 border-b border-slate-900 bg-slate-950/80 backdrop-blur sticky top-0 z-30 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-neonGreen animate-pulse shadow-neon-green" />
-          <span className="font-mono text-sm tracking-widest font-bold uppercase text-slate-400">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-neonBlue selection:text-slate-950 tech-grid font-sans">
+      <header className="p-4 border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-30 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-2.5 h-2.5 rounded-full bg-neonGreen animate-pulse shadow-[0_0_10px_#00ff66]" />
+          <span className="font-gaming text-xs md:text-sm tracking-[0.2em] font-extrabold uppercase text-slate-200">
             Chain Reaction PWA
           </span>
-          <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] font-semibold text-neonRed font-mono tracking-wider ml-1">
+          <span className="px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-800 text-[9px] font-black text-neonRed font-mono tracking-wider ml-1">
             v1.0.0
           </span>
         </div>
@@ -166,9 +166,9 @@ export function App() {
         {inGame && (
           <button
             onClick={handleExitGame}
-            className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded text-xs font-semibold uppercase tracking-wider transition-all"
+            className="px-4 py-2 bg-slate-900 hover:bg-slate-850 hover:text-neonRed border border-slate-800 rounded-xl text-xs font-bold uppercase tracking-wider transition-all font-gaming"
           >
-            ← Back to Lobby
+            ← Exit Game
           </button>
         )}
       </header>
@@ -188,7 +188,7 @@ export function App() {
             onResetStats={resetStats}
           />
         ) : (
-          <div className="w-full max-w-4xl flex flex-col items-center gap-6">
+          <div className="w-full max-w-4xl flex flex-col items-center gap-6 relative z-10 animate-fadeIn">
             <Board
               grid={grid}
               currentPlayer={currentPlayer}
@@ -204,60 +204,62 @@ export function App() {
                 onClick={handleUndo}
                 disabled={isProcessing || history.length === 0}
                 className={`
-                  w-full py-3 border rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300
+                  w-full py-3.5 border-2 rounded-2xl text-xs font-black uppercase tracking-widest transition-all duration-300 font-gaming
                   ${(isProcessing || history.length === 0)
-                    ? 'border-slate-900 bg-slate-950/20 text-slate-600 cursor-not-allowed'
-                    : 'border-neonBlue bg-neonBlue/10 text-neonBlue hover:bg-neonBlue/20 shadow-[0_0_10px_rgba(0,240,255,0.2)] hover:shadow-[0_0_15px_rgba(0,240,255,0.4)]'
+                    ? 'border-slate-900 bg-slate-950/20 text-slate-700 cursor-not-allowed'
+                    : 'border-neonBlue/80 bg-neonBlue/5 text-neonBlue hover:bg-neonBlue/15 shadow-[0_0_15px_rgba(0,240,255,0.1)] hover:shadow-[0_0_25px_rgba(0,240,255,0.3)] hover:scale-[1.02]'
                   }
                 `}
               >
-                ↩ Undo last move
+                ↩ Undo Last Move
               </button>
             </div>
 
             {winner && (
-              <div className="fixed inset-0 bg-slate-950/90 flex items-center justify-center z-50 p-4">
+              <div className="fixed inset-0 bg-slate-950/90 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
                 <div
-                  style={{ borderColor: winner.color }}
-                  className="max-w-md w-full bg-slate-900 border-2 p-8 rounded-2xl text-center space-y-6 shadow-2xl"
+                  style={{ borderColor: winner.color, boxShadow: `0 0 40px ${winner.color}30, inset 0 0 20px ${winner.color}15` }}
+                  className="max-w-md w-full bg-slate-950 border-2 p-8 rounded-3xl text-center space-y-6 shadow-2xl relative overflow-hidden tech-grid-fine"
                 >
-                  <h2 className="text-4xl font-extrabold uppercase tracking-widest text-slate-100">
+                  <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: winner.color }} />
+
+                  <h2 className="text-4xl font-black uppercase tracking-[0.2em] text-slate-100 font-gaming">
                     VICTORY!
                   </h2>
                   <div className="flex justify-center">
                     <div
-                      style={{ backgroundColor: winner.color }}
-                      className="w-16 h-16 rounded-full flex items-center justify-center font-black text-slate-950 text-xl shadow-lg"
+                      style={{ backgroundColor: winner.color, boxShadow: `0 0 25px ${winner.color}80` }}
+                      className="w-20 h-20 rounded-full flex items-center justify-center font-black text-slate-950 text-2xl animate-bounce"
                     >
                       🏆
                     </div>
                   </div>
-                  <div>
-                    <p className="text-2xl font-bold uppercase" style={{ color: winner.color }}>
+                  <div className="space-y-1">
+                    <p className="text-2xl font-black uppercase tracking-wide font-gaming" style={{ color: winner.color }}>
                       {winner.name}
                     </p>
-                    <p className="text-xs text-slate-500 uppercase font-semibold mt-1">
-                      has claimed ultimate dominance over the reactor!
+                    <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest font-mono">
+                      has established complete dominance over the grid!
                     </p>
                   </div>
-                  <div className="flex flex-col gap-2 pt-2">
+                  <div className="flex flex-col gap-3 pt-3">
                     <button
                       onClick={handleStartGame}
-                      className="py-3 bg-neonGreen text-slate-950 font-bold rounded-lg hover:brightness-110 uppercase text-xs tracking-wider font-extrabold transition-all"
+                      className="py-4 bg-gradient-to-r from-neonGreen to-neonGreen/80 hover:brightness-110 active:scale-95 text-slate-950 font-black rounded-xl uppercase text-sm tracking-widest transition-all font-gaming"
                     >
                       ⚡ REMATCH ⚡
                     </button>
                     {history.length > 0 && (
                       <button
                         onClick={handleUndo}
-                        className="py-3 bg-neonBlue/20 border border-neonBlue/80 text-neonBlue font-bold rounded-lg hover:bg-neonBlue/30 uppercase text-xs tracking-wider transition-all shadow-[0_0_10px_rgba(0,240,255,0.2)]"
+                        className="py-3 bg-neonBlue/10 border-2 border-neonBlue text-neonBlue font-bold rounded-xl hover:bg-neonBlue/20 uppercase text-xs tracking-wider transition-all shadow-[0_0_15px_rgba(0,240,255,0.15)] font-gaming"
                       >
                         ↩ Undo Winning Blow
                       </button>
                     )}
                     <button
                       onClick={handleExitGame}
-                      className="py-3 bg-slate-950 border border-slate-800 text-slate-400 font-bold rounded-lg hover:text-slate-200 uppercase text-xs tracking-wider transition-all"
+                      className="py-3 bg-slate-900 border border-slate-850 text-slate-400 hover:text-slate-200 font-bold rounded-xl hover:bg-slate-800 uppercase text-xs tracking-wider transition-all font-gaming"
                     >
                       Exit to Lobby
                     </button>
@@ -269,8 +271,8 @@ export function App() {
         )}
       </main>
 
-      <footer className="p-4 border-t border-slate-900 text-center text-[10px] font-mono text-slate-600 uppercase tracking-widest bg-slate-950">
-        © CHAIN REACTION ENGINE v1.0.0 • LOCAL-FIRST • OFFLINE CAPABLE PWA
+      <footer className="p-4 border-t border-slate-900 text-center text-[9px] font-mono text-slate-600 uppercase tracking-[0.3em] bg-slate-950">
+        © CHAIN REACTION ENGINE v1.0.0 • QUANTUM LOCAL-FIRST TERMINAL • OFFLINE CAPABLE PWA
       </footer>
     </div>
   );
