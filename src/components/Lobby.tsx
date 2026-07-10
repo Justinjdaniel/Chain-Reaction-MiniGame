@@ -98,12 +98,9 @@ export const Lobby: React.FC<LobbyProps> = ({
   };
 
   const updatePlayerName = (id: number, name: string) => {
-    // Limit name to 14 characters and strip control/non-printable characters
-    // eslint-disable-next-line no-control-regex
-    const sanitized = name.slice(0, 14).replace(/[\x00-\x1F\x7F]/g, '');
     setPlayers(players.map(p => {
       if (p.id === id) {
-        return { ...p, name: sanitized };
+        return { ...p, name };
       }
       return p;
     }));
@@ -222,7 +219,6 @@ export const Lobby: React.FC<LobbyProps> = ({
                     <input
                       type="text"
                       value={player.name}
-                      maxLength={14}
                       onChange={(e) => updatePlayerName(player.id, e.target.value)}
                       className="bg-transparent border-b border-slate-800 hover:border-slate-700 focus:border-neonBlue focus:outline-none text-slate-200 text-sm font-semibold w-24 sm:w-32 py-0.5"
                     />
