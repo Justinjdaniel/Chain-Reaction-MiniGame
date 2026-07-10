@@ -154,11 +154,12 @@ export const Lobby: React.FC<LobbyProps> = ({
             </h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase mb-1">Rows (Height)</label>
+                <label htmlFor="board-rows-select" className="block text-xs font-semibold text-slate-400 uppercase mb-1">Rows (Height)</label>
                 <select
+                  id="board-rows-select"
                   value={boardRows}
                   onChange={(e) => setBoardRows(parseInt(e.target.value))}
-                  className="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded p-2 focus:border-neonBlue focus:outline-none"
+                  className="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded p-2 focus:border-neonBlue focus:outline-none focus-visible:ring-2 focus-visible:ring-neonBlue"
                 >
                   {[5, 6, 7, 8, 9, 10, 11, 12].map(n => (
                     <option key={n} value={n}>{n} Rows</option>
@@ -166,11 +167,12 @@ export const Lobby: React.FC<LobbyProps> = ({
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase mb-1">Columns (Width)</label>
+                <label htmlFor="board-cols-select" className="block text-xs font-semibold text-slate-400 uppercase mb-1">Columns (Width)</label>
                 <select
+                  id="board-cols-select"
                   value={boardCols}
                   onChange={(e) => setBoardCols(parseInt(e.target.value))}
-                  className="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded p-2 focus:border-neonBlue focus:outline-none"
+                  className="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded p-2 focus:border-neonBlue focus:outline-none focus-visible:ring-2 focus-visible:ring-neonBlue"
                 >
                   {[4, 5, 6, 7, 8, 9, 10].map(n => (
                     <option key={n} value={n}>{n} Columns</option>
@@ -200,16 +202,21 @@ export const Lobby: React.FC<LobbyProps> = ({
                 >
                   <div className="flex items-center gap-3 w-full sm:w-auto">
                     <div className="relative group">
-                      <div
-                        className="w-6 h-6 rounded-full cursor-pointer border border-slate-700 hover:scale-110 transition-all shadow-inner"
+                      <button
+                        type="button"
+                        aria-label={`Select color for ${player.name}`}
+                        aria-haspopup="true"
+                        className="w-6 h-6 rounded-full border border-slate-700 hover:scale-110 transition-all shadow-inner focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neonBlue"
                         style={{ backgroundColor: player.color }}
                       />
-                      <div className="absolute left-0 mt-2 hidden group-hover:grid grid-cols-4 gap-1 p-2 bg-slate-900 border border-slate-700 rounded-lg z-20">
+                      <div className="absolute left-0 mt-2 hidden group-hover:grid group-focus-within:grid grid-cols-4 gap-1 p-2 bg-slate-900 border border-slate-700 rounded-lg z-20">
                         {COLOR_PALETTE.map(cp => (
-                          <div
+                          <button
+                            type="button"
                             key={cp.hex}
                             onClick={() => updatePlayerColor(player.id, cp.hex)}
-                            className="w-5 h-5 rounded-full cursor-pointer hover:scale-110 transition-all"
+                            aria-label={`Set color to ${cp.name}`}
+                            className="w-5 h-5 rounded-full hover:scale-110 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neonBlue"
                             style={{ backgroundColor: cp.hex }}
                           />
                         ))}
@@ -220,7 +227,8 @@ export const Lobby: React.FC<LobbyProps> = ({
                       type="text"
                       value={player.name}
                       onChange={(e) => updatePlayerName(player.id, e.target.value)}
-                      className="bg-transparent border-b border-slate-800 hover:border-slate-700 focus:border-neonBlue focus:outline-none text-slate-200 text-sm font-semibold w-24 sm:w-32 py-0.5"
+                      aria-label={`Name for player ${player.id + 1}`}
+                      className="bg-transparent border-b border-slate-800 hover:border-slate-700 focus:border-neonBlue focus:outline-none text-slate-200 text-sm font-semibold w-24 sm:w-32 py-0.5 focus-visible:ring-1 focus-visible:ring-neonBlue"
                     />
                   </div>
 
@@ -228,7 +236,8 @@ export const Lobby: React.FC<LobbyProps> = ({
                     <select
                       value={player.type}
                       onChange={(e) => updatePlayerType(player.id, e.target.value as 'human' | 'ai')}
-                      className="bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded px-2 py-1 focus:border-neonBlue focus:outline-none"
+                      aria-label={`Type for player ${player.id + 1}`}
+                      className="bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded px-2 py-1 focus:border-neonBlue focus:outline-none focus-visible:ring-2 focus-visible:ring-neonBlue"
                     >
                       <option value="human">Human</option>
                       <option value="ai">AI Bot</option>
@@ -238,7 +247,8 @@ export const Lobby: React.FC<LobbyProps> = ({
                       <select
                         value={player.difficulty}
                         onChange={(e) => updatePlayerDifficulty(player.id, e.target.value as 'easy' | 'medium' | 'hard')}
-                        className="bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded px-2 py-1 focus:border-neonBlue focus:outline-none"
+                        aria-label={`Difficulty for player ${player.id + 1}`}
+                        className="bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded px-2 py-1 focus:border-neonBlue focus:outline-none focus-visible:ring-2 focus-visible:ring-neonBlue"
                       >
                         <option value="easy">Easy</option>
                         <option value="medium">Medium</option>
@@ -248,9 +258,11 @@ export const Lobby: React.FC<LobbyProps> = ({
 
                     {players.length > 2 && (
                       <button
+                        type="button"
                         onClick={() => removePlayer(player.id)}
-                        className="p-1 bg-red-950/40 border border-red-800/60 text-red-400 text-xs rounded hover:bg-red-950/80 transition-all"
+                        className="p-1 bg-red-950/40 border border-red-800/60 text-red-400 text-xs rounded hover:bg-red-950/80 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                         title="Remove Player"
+                        aria-label={`Remove ${player.name}`}
                       >
                         ✕
                       </button>
