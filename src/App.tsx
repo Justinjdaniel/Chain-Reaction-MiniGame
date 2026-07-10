@@ -166,7 +166,7 @@ export function App() {
         {inGame && (
           <button
             onClick={handleExitGame}
-            className="px-4 py-2 bg-slate-900 hover:bg-slate-850 hover:text-neonRed border border-slate-800 rounded-xl text-xs font-bold uppercase tracking-wider transition-all font-gaming"
+            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 hover:text-neonRed border border-slate-800 rounded-xl text-xs font-bold uppercase tracking-wider transition-all font-gaming"
           >
             ← Exit Game
           </button>
@@ -259,7 +259,7 @@ export function App() {
                     )}
                     <button
                       onClick={handleExitGame}
-                      className="py-3 bg-slate-900 border border-slate-850 text-slate-400 hover:text-slate-200 font-bold rounded-xl hover:bg-slate-800 uppercase text-xs tracking-wider transition-all font-gaming"
+                      className="py-3 bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 font-bold rounded-xl hover:bg-slate-800 uppercase text-xs tracking-wider transition-all font-gaming"
                     >
                       Exit to Lobby
                     </button>

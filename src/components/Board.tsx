@@ -155,7 +155,7 @@ export const Board: React.FC<BoardProps> = ({
                   `}
                 >
                   {/* Digital Coordinate Labels */}
-                  <span className="absolute top-0.5 left-1 text-[6px] sm:text-[7px] text-slate-750 font-mono pointer-events-none font-bold" aria-hidden="true">
+                  <span className="absolute top-0.5 left-1 text-[6px] sm:text-[7px] text-slate-700 font-mono pointer-events-none font-bold" aria-hidden="true">
                     {r},{c}
                   </span>
 
