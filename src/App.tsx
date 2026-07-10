@@ -79,7 +79,7 @@ export function App() {
       return () => clearTimeout(timer);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inGame, currentPlayer, isProcessing, winner]);
+  }, [inGame, currentPlayer, winner]);
 
   const handleCellMove = async (r: number, c: number) => {
     const engine = engineRef.current;
