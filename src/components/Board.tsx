@@ -21,11 +21,16 @@ export const Board: React.FC<BoardProps> = ({
   const activePlayer = players[currentPlayer];
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
-      <div className="mb-6 flex items-center gap-3 p-3 bg-slate-900/80 border border-slate-800 rounded-xl max-w-sm w-full shadow-lg">
+    <div className="flex flex-col items-center justify-center p-4" role="region" aria-label="Game Board and Status">
+      <div
+        className="mb-6 flex items-center gap-3 p-3 bg-slate-900/80 border border-slate-800 rounded-xl max-w-sm w-full shadow-lg"
+        aria-live="polite"
+        role="status"
+      >
         <div
           className="w-4 h-4 rounded-full animate-ping"
           style={{ backgroundColor: activePlayer?.color }}
+          aria-hidden="true"
         />
         <div className="flex-1">
           <p className="text-xs text-slate-500 font-semibold tracking-widest uppercase">CURRENT TURN</p>
@@ -38,7 +43,11 @@ export const Board: React.FC<BoardProps> = ({
         </div>
       </div>
 
-      <div className="relative p-2 md:p-3 bg-slate-950 border-2 border-slate-800 rounded-2xl shadow-[0_0_20px_rgba(15,23,42,0.8)] overflow-hidden">
+      <div
+        className="relative p-2 md:p-3 bg-slate-950 border-2 border-slate-800 rounded-2xl shadow-[0_0_20px_rgba(15,23,42,0.8)] overflow-hidden"
+        role="grid"
+        aria-label="Reactor grid"
+      >
         <div
           className="absolute inset-0 opacity-5 blur-2xl pointer-events-none transition-all duration-500"
           style={{ background: activePlayer?.color }}
@@ -71,17 +80,18 @@ export const Board: React.FC<BoardProps> = ({
                   key={`${r}-${c}`}
                   onClick={() => onCellClick(r, c)}
                   disabled={isProcessing || (cell.player !== null && cell.player !== currentPlayer)}
+                  aria-label={`Cell at Row ${r + 1}, Column ${c + 1}. ${cell.orbs === 0 ? 'Empty' : `${cell.orbs} orb${cell.orbs > 1 ? 's' : ''} owned by ${cellOwner?.name || 'unknown player'}`}. Critical mass capacity is ${maxVal}.`}
                   style={{
                     border: borderGlow,
                     boxShadow: shadowGlow
                   }}
                   className={`
                     w-12 h-12 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center relative transition-all duration-300 bg-slate-900/40 hover:bg-slate-900
-                    disabled:cursor-not-allowed group overflow-hidden
+                    disabled:cursor-not-allowed group overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neonBlue
                     ${isCellExploding ? 'scale-110 !border-red-500 bg-red-950/20 shadow-[0_0_15px_#ff0055] z-20' : ''}
                   `}
                 >
-                  <span className="absolute top-1 left-1 text-[8px] text-slate-700 font-mono pointer-events-none">
+                  <span className="absolute top-1 left-1 text-[8px] text-slate-700 font-mono pointer-events-none" aria-hidden="true">
                     {r},{c}
                   </span>
 
