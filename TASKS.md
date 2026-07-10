@@ -30,3 +30,4 @@ This file tracks the division of labor among the conceptual sub-agents to keep d
 | **TASK-5.1** | Setup Vite PWA plugin or manual Service Worker registration for offline assets caching. | Frontend/PWA Agent | DONE | Audit build folder, verify service worker register event. |
 | **TASK-5.2** | Configure GitHub Actions CI/CD workflows for linting, testing, and GitHub Pages deployment. | Architect/PM Agent | DONE | Push to branch and observe pipeline success. |
 | **TASK-6.1** | Comprehensive testing: Write and execute tests spanning game engine, AI logic, and page actions. | QA/Testing Agent | DONE | Run test scripts successfully. |
+| **TASK-7.1** | Update explosion rules (leave 0 orbs), early victory condition, and remove results bouncing. Add clear neon-styled instructions panel. | Game Engine & Frontend Agents | DONE | Unit tests and Playwright visual screenshot check. |

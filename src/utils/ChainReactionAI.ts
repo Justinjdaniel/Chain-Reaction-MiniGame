@@ -90,8 +90,8 @@ export class ChainReactionAI {
     if (cell.criticalMass === 2) score += 15; // corner
     else if (cell.criticalMass === 3) score += 5;  // edge
 
-    // If cell is unstable and placing an orb will explode it
-    if (cell.orbs === cell.criticalMass - 1) {
+    // If cell is unstable and placing an orb will explode it (reaches criticalMass + 1)
+    if (cell.orbs === cell.criticalMass) {
       score += 25; // Good to explode
 
       // Check adjacent enemies we could convert
@@ -158,8 +158,11 @@ export class ChainReactionAI {
         const active = ecCell.player;
         if (active === null) continue;
 
-        ecCell.orbs -= ecCell.criticalMass;
-        if (ecCell.orbs === 0) ecCell.player = null;
+        ecCell.orbs -= (ecCell.criticalMass + 1);
+        if (ecCell.orbs <= 0) {
+          ecCell.orbs = 0;
+          ecCell.player = null;
+        }
 
         if (er > 0) dist.push({ r: er - 1, c: ec, player: active });
         if (er < engine.rows - 1) dist.push({ r: er + 1, c: ec, player: active });
@@ -172,6 +175,12 @@ export class ChainReactionAI {
         target.player = dp;
         target.orbs++;
       }
+
+      engine.checkEliminations();
+      if (engine.checkGameOver()) {
+        break;
+      }
+
       exploding = engine.getExplodingCells();
     }
 

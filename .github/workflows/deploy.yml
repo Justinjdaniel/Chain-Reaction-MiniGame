@@ -27,12 +27,13 @@ jobs:
         run: npm ci
 
       - name: Run Linting Check
-        run: npm run lint || echo "Linting omitted or configured"
+        run: npm run lint
 
-      - name: Run Unit Tests & Benchmark Suite
-        run: |
-          npm run test
-          npm run benchmark
+      - name: Run Unit Tests
+        run: npm run test
+
+      - name: Run AI Benchmark Simulation
+        run: npm run benchmark
 
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'

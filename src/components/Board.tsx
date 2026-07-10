@@ -57,7 +57,7 @@ export const Board: React.FC<BoardProps> = ({
               const isCellExploding = explodingCells.some(ec => ec.r === r && ec.c === c);
               const maxVal = cell.criticalMass;
 
-              const isUnstable = cell.orbs === maxVal - 1;
+              const isUnstable = cell.orbs === maxVal;
               const borderGlow = cellOwner && isUnstable
                 ? `1px solid ${cellOwner.color}`
                 : '1px solid #1e293b';
