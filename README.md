@@ -27,7 +27,7 @@ Each cell has a **Critical Mass** capacity determined by its location on the gri
 - **Center (Inner):** Critical Mass = **4** (explodes at 4 orbs)
 
 When a cell reaches or exceeds its Critical Mass, it **explodes** immediately:
-1. The cell loses exactly its Critical Mass worth of orbs (leaving exactly **0** behind when exploding at exactly the threshold).
+1. The cell loses exactly its explosion threshold worth of orbs (leaving exactly 0 behind when exploding at exactly the threshold).
 2. One orb is sent to each of its adjacent neighbor cells (up, down, left, right).
 3. The newly populated adjacent cells take on the **exploding player's color**, even if they previously belonged to an opponent!
 4. If any adjacent cells also reach their Critical Mass due to this influx, they will trigger a **cascading chain reaction** of explosions!
