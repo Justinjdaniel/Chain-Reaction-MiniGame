@@ -7,9 +7,8 @@
 
 An extremely responsive, high-performance, dark-themed **Chain Reaction Strategy Game** built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. Designed with a futuristic neon aesthetic, local-first performance, offline-capable Progressive Web App (PWA) features, and an advanced AI engine.
 
-## 🔗 Live Access & Deployment
-Play the live, fully-deployed game directly in your browser or install it on your device:
-📌 **[https://justinjdaniel.github.io/Chain-Reaction-MiniGame/](https://justinjdaniel.github.io/Chain-Reaction-MiniGame/)**
+📌 Play the live game directly in your browser or install it on your device:
+➡️ **[Live Deployed URL](https://justinjdaniel.github.io/Chain-Reaction-MiniGame/)**
 
 ---
 
@@ -28,73 +27,117 @@ Each cell has a **Critical Mass** capacity determined by its location on the gri
 - **Center (Inner):** Critical Mass = **4** (explodes at 4 orbs)
 
 When a cell reaches or exceeds its Critical Mass, it **explodes** immediately:
-1. The cell loses exactly its Critical Mass worth of orbs (keeping any remainder).
+1. The cell loses exactly its explosion threshold worth of orbs (leaving exactly 0 behind when exploding at exactly the threshold).
 2. One orb is sent to each of its adjacent neighbor cells (up, down, left, right).
 3. The newly populated adjacent cells take on the **exploding player's color**, even if they previously belonged to an opponent!
 4. If any adjacent cells also reach their Critical Mass due to this influx, they will trigger a **cascading chain reaction** of explosions!
 
 ### 💀 Player Elimination
 - A player is eliminated if they have **no orbs left on the board**.
-- **Important:** Elimination checks are delayed until *after* each player has had their first turn (to allow everyone a chance to place their starting orb).
+- > [!IMPORTANT]
+  > Elimination checks are delayed until *after* each player has had their first turn (to allow everyone a chance to place their starting orb).
+
+---
+
+## 🛠️ Tech Stack & Architecture
+
+This modern progressive web app is crafted using standard web technologies optimized for high performance and low latency:
+
+*   **Frontend Library:** [React 18](https://react.dev/) (with TypeScript for robust type-safety)
+*   **Build Tool:** [Vite](https://vite.dev/) (delivering blazingly fast hot module replacement and bundle optimization)
+*   **Styling:** [Tailwind CSS v3](https://tailwindcss.com/) (augmented with custom neon utilities, animations, and radial orb glow effects)
+*   **PWA Engine:** `vite-plugin-pwa` (offline caching, background service worker registration, and app installation capabilities)
+*   **Test Suite:** [Vitest](https://vitest.dev/) (running supercharged unit tests and AI benchmark simulations)
+
+### 📂 Directory Structure
+
+The repository separates game logic, visuals, and bot simulations:
+*   `src/utils/ChainReactionEngine.ts`: Core state machine, cell limit checks, turn mechanics, explosion cascade queues, and win/elimination conditions.
+*   `src/utils/ChainReactionAI.ts`: AI search algorithms, heuristics, evaluation functions, and Minimax search tree pruning. (See details in [`docs/AI_DESIGN.md`](docs/AI_DESIGN.md)).
+*   `src/components/Lobby.tsx` & `Board.tsx`: Neon-themed user interface, lobbies, customization menus, interactive board grid, and explosion visuals.
+*   `src/hooks/useGameStats.ts`: Encapsulation of Local Storage statistics and leaderboard records.
+*   `TASKS.md`: Conceptual planning board tracking sub-agent progression. (See [`TASKS.md`](TASKS.md)).
 
 ---
 
 ## 🚀 Key Features
 
-- **Customizable Lobby (2-8 Players):** Supports any mix of Human and AI players in a single game lobby.
-- **Smart AI Bots with 3 Difficulty Levels:**
-  - 🟢 **Easy:** Plays randomly, with a slight heuristic bias.
-  - 🟡 **Medium:** One-step greedy heuristic (immediate captures and defense).
-  - 🔴 **Hard (Minimax with Alpha-Beta Pruning):** 3-plies deep searches evaluating board position, player counts, explosion potential, and corner dominance.
-- **Progressive Web App (PWA):** Installable directly onto iOS, Android, macOS, or Windows. Fully offline-capable via background Service Worker asset caching.
-- **Local Stats & Achievements Tracker:** Persists your profile statistics (games played, games won, win streaks) and efficiency records ("Fewest Turns to Win" by board dimensions and difficulty) in Local Storage.
-- **Immersive Neon UI:** Smooth custom animations, vibrant high-contrast glowing elements, responsive grid scalability, and interactive feedback.
+*   **Customizable Lobby (2-8 Players):** Supports any mix of Human and AI players in a single game lobby.
+*   **Smart AI Bots with 3 Difficulty Levels:**
+    *   🟢 **Easy:** Plays randomly, with a slight heuristic bias.
+    *   🟡 **Medium:** One-step greedy heuristic (immediate captures and defense).
+    *   🔴 **Hard (Minimax with Alpha-Beta Pruning):** 3-plies deep searches evaluating board position, player counts, explosion potential, and corner dominance.
+*   **Progressive Web App (PWA):** Installable directly onto iOS, Android, macOS, or Windows. Fully offline-capable via background Service Worker asset caching.
+*   **Local Stats & Achievements Tracker:** Persists your profile statistics (games played, games won, win streaks) and efficiency records ("Fewest Turns to Win" by board dimensions and difficulty) in Local Storage.
+*   **Immersive Neon UI:** Smooth custom animations, vibrant high-contrast glowing elements, responsive grid scalability, and interactive feedback.
+*   **A11y & Keyboard Navigation:** Rich screen reader labels for cells and fully accessible color swatches via keyboard tab order.
 
 ---
 
-## 🛠️ Architecture & Project Structure
+## ⚙️ Local Development & Setup
 
-The project separates logic, presentation, and bots into highly decoupled components:
-- `src/utils/ChainReactionEngine.ts`: Core state machine, cell limit checks, turn mechanics, explosion cascade queues, and win/elimination conditions.
-- `src/utils/ChainReactionAI.ts`: AI search algorithms, heuristics, evaluation functions, and Minimax search tree pruning. (See details in [`docs/AI_DESIGN.md`](docs/AI_DESIGN.md)).
-- `src/components/Lobby.tsx` & `Board.tsx`: Neon-themed user interface, lobbies, customization menus, interactive board grid, and explosion visuals.
-- `src/hooks/useGameStats.ts`: Encapsulation of Local Storage statistics and leaderboard records.
-- `TASKS.md`: Conceptual planning board tracking sub-agent progression. (See [`TASKS.md`](TASKS.md)).
+Follow these steps to run the reactor environment locally.
 
----
+> [!NOTE]
+> The package manager choice for this project is strictly **pnpm**. Do not use `npm` or `yarn`.
 
-## 📦 Local Development & Commands
-
+### Prerequisites
 Ensure you have [Node.js](https://nodejs.org/) installed (v18+ or v22 recommended).
 
 ### 1. Install Dependencies
 ```bash
-npm install
+pnpm install
 ```
 
 ### 2. Run Dev Server
 Starts the local development server with hot-reload:
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ### 3. Build & Compile Production App
-Runs the TypeScript compiler and builds the optimized PWA bundle to `/dist`:
+Runs the TypeScript compiler and builds the optimized, offline-ready production PWA bundle to `/dist`:
 ```bash
-npm run build
+pnpm build
 ```
 
-### 4. Run Unit Tests
-Runs the Vitest unit tests verifying the core game engine and AI mechanics:
+### 4. Preview Build Locally
+To run a local web server serving the production `/dist` folder:
 ```bash
-npm run test
+pnpm preview
 ```
 
-### 5. Run Match Simulation & AI Benchmark Suite
+### 5. Run Unit Tests
+Runs the Vitest unit tests verifying the core game engine, rules, and AI decisions:
+```bash
+pnpm test
+```
+
+### 6. Run Match Simulation & AI Benchmark Suite
 Runs automated headless matches between different bots to verify search times, pruning efficiency, and engine stability:
 ```bash
-npm run benchmark
+pnpm benchmark
 ```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions to make the game even better! Please read the following guidelines before submitting a pull request:
+
+### 💡 Code Quality & Formatting
+*   Follow clean-code principles, ensuring components remain modular and decoupled from the engine.
+*   Run linting before proposing changes:
+    ```bash
+    pnpm lint
+    ```
+*   Ensure all tests pass successfully (`pnpm test`).
+
+### 📦 Performance Guidelines
+*   **Bypass Object Spreads in Hot Paths:** To maintain ultra-low latency (< 15ms AI response time), avoid standard JS collection arrays mapping (`.map()`) or object spreads (`{...cell}`) inside deep minimax loops. Always prefer pre-allocated arrays, raw nested `for` loops, and `skipGridInit` clones.
+
+> [!TIP]
+> Refer to the design documents inside the `docs/` directory (`docs/AI_DESIGN.md` and `docs/GAMEPLAY_DESIGN.md`) to align your code style and engine design with existing architectures.
 
 ---
 
@@ -112,21 +155,9 @@ We enforce **Conventional Commits** to easily generate version history. Commit m
 
 [optional body]
 ```
-Where `type` is one of:
-- `feat`: A new feature (corresponds to a **MINOR** version bump)
-- `fix`: A bug fix (corresponds to a **PATCH** version bump)
-- `docs`: Documentation changes
-- `style`: Code style/formatting changes
-- `refactor`: Code changes that neither fix a bug nor add a feature
-- `test`: Adding or correcting tests
-- `chore`: Internal tool or build process updates
-
-### 🔍 Identifying the App Version
-The current running version of the application can be identified in two places:
-1. **Source of Truth:** Defined in the `"version"` field inside the project's [`package.json`](package.json).
-2. **User Interface:** Displayed dynamically in the game's header/footer, so users can instantly verify they are running the latest cached build of the PWA.
+Where `type` is one of `feat`, `fix`, `docs`, `style`, `refactor`, `test`, or `chore`.
 
 ---
 
 ## 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
